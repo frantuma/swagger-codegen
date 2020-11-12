@@ -20,7 +20,9 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
       - name: build codegen
-        run: mvn -q -B package -DskipTests
+        run: |
+          mvn -q -B package -DskipTests
+          ls -la target
       - name: prepare codegen cli
         run: mkdir codegen-cli && cp target/swagger-codegen-cli.jar codegen-cli
       - name: upload codegen cli
