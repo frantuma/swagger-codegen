@@ -1,0 +1,73 @@
+name: Test Workflow
+
+on:
+  workflow_dispatch:
+    branches: ["master", "test-framework", "3.0.0"]
+
+jobs:
+
+  build-codegen:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [ 8 ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1        -
+      - name: build codegen
+        run: mvn -q -B package -DskipTests
+      - name: prepare codegen cli
+        run: mkdir codegen-cli && cp target/swagger-codegen-cli.jar codegen-cli
+      - name: upload codegen cli
+        uses: actions/upload-artifact@v2
+        with:
+          name: codegen-cli
+          path: codegen-cli
+
+  generate-js:
+
+    needs: build-codegen
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-java@v1        -
+      - name: Download codegen cli
+        uses: actions/download-artifact@v2
+        with:
+          name: codegen-cli
+
+      # - name: generate javascript client v3 using petstore definition
+      #  run: cd ./samples/client/petstore/csharp/SwaggerClient
+      #- name: prepare js artifacts
+      #  run: mkdir js-v3-petstore-artifacts && cp -R js-v3-petstore-out js-v3-petstore-artifacts/
+      #- name: upload js artifacts
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: js-v3-petstore-artifacts
+      #    path: js-v3-petstore-artifacts
+
+  #build-js:
+
+#    needs: generate-js
+
+#    runs-on: ubuntu-latest
+
+#    strategy:
+#      matrix:
+#        node-version: [8.x, 10.x, 12.x]
+
+#    steps:
+#      - name: Download js artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: js-v3-petstore-artifacts
+#      - name: Use Node.js ${{ matrix.node-version }}
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#      - name: test so far
+#        run: ls -la
