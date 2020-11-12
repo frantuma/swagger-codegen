@@ -37,8 +37,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        java: [ 8 ]
+
     steps:
-      - uses: actions/setup-java@v1        -
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
       - name: Download codegen cli
         uses: actions/download-artifact@v2
         with:
