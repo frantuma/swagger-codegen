@@ -24,7 +24,7 @@ jobs:
           mvn -q -B package -DskipTests
           ls -la target
       - name: prepare codegen cli
-        run: mkdir codegen-cli && cp target/swagger-codegen-cli.jar codegen-cli
+        run: mkdir codegen-cli && cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
       - name: upload codegen cli
         uses: actions/upload-artifact@v2
         with:
@@ -43,7 +43,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: codegen-cli
-
+      - run: ls -la
       # - name: generate javascript client v3 using petstore definition
       #  run: cd ./samples/client/petstore/csharp/SwaggerClient
       #- name: prepare js artifacts
