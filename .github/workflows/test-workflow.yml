@@ -51,7 +51,7 @@ jobs:
           name: codegen-cli
       - run: ls -la
       - name: generate javascript client v3 using petstore definition
-      - run: |
+        run: |
           . ./CI/generate.sh javascript js-v3-petstore null -DappName=PetstoreClient --additional-properties useES6=false
           ls -la generated
 
