@@ -1,4 +1,4 @@
-name: Test Workflow
+name: Samples Generation
 
 on:
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
           name: codegen-cli
           path: codegen-cli
 
-  generate-js:
+  generate-js-v3-petstore:
 
     needs: build-codegen
 
@@ -59,30 +59,41 @@ jobs:
 
       #- name: prepare js artifacts
       #  run: mkdir js-v3-petstore-artifacts && cp -R js-v3-petstore-out js-v3-petstore-artifacts/
-      #- name: upload js artifacts
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    name: js-v3-petstore-artifacts
-      #    path: js-v3-petstore-artifacts
+      - name: upload js artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: generated_js-v3-petstore
+          path: generated/js-v3-petstore
 
-  #build-js:
+  build-js-v3-petstore:
 
-#    needs: generate-js
+    needs: generate-js-v3-petstore
 
-#    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-#    strategy:
-#      matrix:
-#        node-version: [8.x, 10.x, 12.x]
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
 
-#    steps:
-#      - name: Download js artifacts
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: js-v3-petstore-artifacts
-#      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: ${{ matrix.node-version }}
-#      - name: test so far
-#        run: ls -la
+    steps:
+      - name: Download js artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: generated_js-v3-petstore
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: test so far
+        run: |
+        ls -la
+        du -hcd 2
+        echo "****** npm i ******" > js-v3-petstore.build.log
+        npm i > js-v3-petstore.build.log
+        echo "****** npm run test ******" > js-v3-petstore.build.log
+        npm run test >> js-v3-petstore.build.log
+      - name: upload logs
+        uses: actions/upload-artifact@v2
+        with:
+          name: js-v3-petstore.build.log
+          path: js-v3-petstore.build.log
