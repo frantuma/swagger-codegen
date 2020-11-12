@@ -22,7 +22,7 @@ jobs:
       - name: build codegen
         run: |
           mvn -q -B package -DskipTests
-          ls -la target
+          ls -la
       - name: prepare codegen cli
         run: mkdir codegen-cli && cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
       - name: upload codegen cli
