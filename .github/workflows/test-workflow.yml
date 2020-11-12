@@ -50,8 +50,11 @@ jobs:
         with:
           name: codegen-cli
       - run: ls -la
-      # - name: generate javascript client v3 using petstore definition
-      #  run: cd ./samples/client/petstore/csharp/SwaggerClient
+      - name: generate javascript client v3 using petstore definition
+      - run: |
+          . ./CI/generate.sh javascript js-v3-petstore null -DappName=PetstoreClient --additional-properties useES6=false
+          ls -la generated
+
       #- name: prepare js artifacts
       #  run: mkdir js-v3-petstore-artifacts && cp -R js-v3-petstore-out js-v3-petstore-artifacts/
       #- name: upload js artifacts
