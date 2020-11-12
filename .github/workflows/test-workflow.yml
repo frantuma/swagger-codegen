@@ -52,7 +52,8 @@ jobs:
       - run: ls -la
       - name: generate javascript client v3 using petstore definition
         run: |
-          . ./CI/generate.sh javascript js-v3-petstore null -DappName=PetstoreClient --additional-properties useES6=false
+          . ./.CI/generate.sh javascript js-v3-petstore null -DappName=PetstoreClient --additional-properties useES6=false
+          du -hcd 2
           ls -la generated
 
       #- name: prepare js artifacts
