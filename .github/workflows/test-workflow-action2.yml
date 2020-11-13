@@ -85,7 +85,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
+      - run: |
+          ls -la
+          du -hcd 2
       - name: jsbuild
         id: jsbuild
         uses: ./.github/actions/jsbuild
