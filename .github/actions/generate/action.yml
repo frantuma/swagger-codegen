@@ -1,0 +1,33 @@
+name: 'Generate'
+description: 'codegen generate'
+inputs:
+  spec-url:
+    description: 'Url of the openapi definition'
+    required: true
+    default: 'https://petstore3.swagger.io/api/v3/openapi.json'
+  language:
+    description: 'Language to generate'
+    required: true
+  job-name:
+    description: 'Job name'
+    required: true
+    default: ${{ env.INPUT_language }}
+outputs:
+  logs:
+    description: "logs"
+    value: ${{ steps.generate.outputs.logs }}
+  output-path:
+    description: "output path"
+    value: ${{ steps.generate.outputs.path }}
+runs:
+  using: "composite"
+  steps:
+    - run: echo Hello ${{ inputs.spec-url }}.
+      shell: bash
+    - id: generate
+      run: |
+        echo "::set-output name=logs::$(echo ${{ env.INPUT_spec-url }})"
+        echo "::set-output name=path::$(echo ${{ env.INPUT_job-name }})"
+      shell: bash
+    - run: ${{ github.action_path }}/goodbye.sh
+      shell: bash
