@@ -105,13 +105,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: generate_logs_${{ env.JOB_NAME }}
-          path: ${{ env.JOB_NAME }}.build.log
+          #path: ${{ env.JOB_NAME }}.build.log
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: |
-          ls -la generated/${{ env.JOB_NAME }}
       - name: jsbuild
         id: jsbuild
         uses: ./.github/actions/jsbuild
