@@ -25,6 +25,7 @@ runs:
       shell: bash
     - id: generate
       run: |
+        echo Hi ${{ env.INPUT_spec-url }}.
         echo "::set-output name=logs::$(echo ${{ env.INPUT_spec-url }})"
         echo "::set-output name=path::$(echo ${{ env.INPUT_job-name }})"
       shell: bash
