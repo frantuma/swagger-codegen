@@ -11,7 +11,7 @@ inputs:
   job-name:
     description: 'Job name'
     required: true
-    default: ${{ env.INPUT_language }}
+    default: ${{ inputs.language }}
 outputs:
   logs:
     description: "logs"
