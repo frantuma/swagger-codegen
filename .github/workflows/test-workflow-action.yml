@@ -22,6 +22,7 @@ jobs:
         with:
           language: "javascript"
           job-name: "js-petstore-v3"
+          options: " -DappName=PetstoreClient --additional-properties useES6=false"
       - run: |
           echo "AAA ${{ steps.aaaa.outputs.path }}"
           echo "AAA ${{ steps.aaaa.outputs.logs }}"

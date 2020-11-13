@@ -11,6 +11,10 @@ inputs:
   job-name:
     description: 'Job name'
     required: true
+  options:
+    description: 'Language Options'
+    required: false
+    default: ""
 outputs:
   logs:
     description: "logs"
@@ -24,12 +28,16 @@ runs:
     - run: echo Hello ${{ inputs.spec-url }}.
       shell: bash
     - id: generate
+      name: generate
       run: |
         echo Hi ${{ env.INPUT_SPECURL }}.
         echo Hi2 ${{ env.INPUT_SPEC_URL }}.
         echo Hi3 ${{ env.INPUT_SPEC-URL }}.
         echo "::set-output name=logs::$(echo YATAY)"
-        echo "::set-output name=path::$(echo ${{ inputs.spec-url }})"
+        echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
+    - run: chmod +x ${{ github.action_path }}/generate.sh
+      shell: bash
+    - run: ${{ github.action_path }}/generate.sh ${{ inputs.language }} ${{ inputs.job-name }} ${{ inputs.spec-url }} ${{ inputs.options }}
       shell: bash
     - run: ${{ github.action_path }}/goodbye.sh
       shell: bash
