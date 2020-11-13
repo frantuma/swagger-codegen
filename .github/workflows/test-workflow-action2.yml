@@ -1,11 +1,13 @@
 name: Test action 2
 
 on:
+  # execute on demand
   workflow_dispatch:
     branches: ["master", "test-framework", "3.0.0"]
 
 jobs:
 
+  # builds codegen cli and uploads its artifact
   build-codegen:
 
     runs-on: ubuntu-latest
@@ -30,6 +32,7 @@ jobs:
           name: codegen-cli
           path: codegen-cli
 
+  # generate a javascript client V3 from petstore3.swagger.io OpenAPI definition
   generate-js-v3-petstore:
 
     needs: build-codegen
@@ -49,9 +52,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: codegen-cli
-      - run: echo "job env = $JOB_NAME"
-      - run: echo "job env 2 = ${{ env.JOB_NAME }}"
-
       - name: generate
         id: generate
         continue-on-error: true
@@ -60,20 +60,24 @@ jobs:
           language: $LANGUAGE
           job-name: ${JOB_NAME}
           options: $OPTIONS
-      - run: |
-          echo "GENERATE outcome ${{ steps.generate.outcome }}"
-          echo "PATH ${{ steps.generate.outputs.path }}"
-          echo "LOGS ${{ steps.generate.outputs.logs }}"
-      - name: test success
-        if: contains(steps.generate.outcome, 'success')
-        run: echo "SUCCESS ${{ steps.generate.outputs.logs }}"
-
-      - name: upload artifacts
+      - name: upload generate logs
+        uses: actions/upload-artifact@v2
+        with:
+          name: generate_logs_${{ env.JOB_NAME }}
+          path: ${{ steps.generate.outputs.logs }}
+      - name: upload generated code
         if: contains(steps.generate.outcome, 'success')
         uses: actions/upload-artifact@v2
         with:
           name: generated_${{ env.JOB_NAME }}
           path: ${{ steps.generate.outputs.path }}
+      - run: |
+          echo ${{ steps.generate.outcome }} > generate_outcome_${{ env.JOB_NAME }}
+      - name: upload generate outcome
+        uses: actions/upload-artifact@v2
+        with:
+          name: generate_outcome_${{ env.JOB_NAME }}
+          path: generate_outcome_${{ env.JOB_NAME }}
     env:
       LANGUAGE: "javascript"
       JOB_NAME: "js-petstore-v3"
@@ -97,6 +101,11 @@ jobs:
           name: generated_${{ env.JOB_NAME }}
           # todo replace with job output
           path: generated/${{ env.JOB_NAME }}
+      - name: Download logs
+        uses: actions/download-artifact@v2
+        with:
+          name: generate_logs_${{ env.JOB_NAME }}
+          path: ${{ env.JOB_NAME }}.build.log
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
