@@ -1,4 +1,4 @@
-name: Test Framework
+name: Test Framework Single
 
 on:
   # execute on demand
@@ -73,6 +73,13 @@ jobs:
           language: $LANGUAGE
           job-name: ${JOB_NAME}
           options: $OPTIONS
+      - run: |
+          echo ${{ steps.generate.outcome }} > generate_outcome_${{ env.JOB_NAME }}
+      - name: upload generate outcome
+        uses: actions/upload-artifact@v2
+        with:
+          name: generate_outcome_${{ env.JOB_NAME }}
+          path: generate_outcome_${{ env.JOB_NAME }}
       - name: upload generate logs
         uses: actions/upload-artifact@v2
         with:
@@ -84,13 +91,7 @@ jobs:
         with:
           name: generated_${{ env.JOB_NAME }}
           path: ${{ steps.generate.outputs.path }}
-      - run: |
-          echo ${{ steps.generate.outcome }} > generate_outcome_${{ env.JOB_NAME }}
-      - name: upload generate outcome
-        uses: actions/upload-artifact@v2
-        with:
-          name: generate_outcome_${{ env.JOB_NAME }}
-          path: generate_outcome_${{ env.JOB_NAME }}
+
     env:
       LANGUAGE: ${{ github.event.inputs.language }}
       JOB_NAME: ${{ github.event.inputs.jobName }}
