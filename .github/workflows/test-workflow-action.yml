@@ -17,7 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: My first step
+        id: aaaa
         uses: ./.github/actions/generate
         with:
           language: "javascript"
           job-name: "js-petstore-v3"
+      - run: |
+        echo "AAA ${{ steps.aaaa.outputs.path }}"
+        echo "AAA ${{ steps.aaaa.outputs.logs }}"
