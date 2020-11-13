@@ -102,8 +102,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: |
-          ls -la
-          du -hcd 2
+          ls -la generated/${{ env.JOB_NAME }}
       - name: jsbuild
         id: jsbuild
         uses: ./.github/actions/jsbuild
