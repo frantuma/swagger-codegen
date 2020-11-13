@@ -1,0 +1,66 @@
+name: Test action 2
+
+on:
+  workflow_dispatch:
+    branches: ["master", "test-framework", "3.0.0"]
+
+jobs:
+
+  build-codegen:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [ 8 ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: build codegen
+        run: |
+          mvn -q -B package -DskipTests
+      - name: prepare codegen cli
+        run: mkdir codegen-cli && cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
+      - name: upload codegen cli
+        uses: actions/upload-artifact@v2
+        with:
+          name: codegen-cli
+          path: codegen-cli
+
+  generate-js-v3-petstore:
+
+    needs: build-codegen
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [ 8 ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Download codegen cli
+        uses: actions/download-artifact@v2
+        with:
+          name: codegen-cli
+      - name: generate
+        id: generate
+        uses: ./.github/actions/generate
+        with:
+          language: "javascript"
+          job-name: "js-petstore-v3"
+          options: " -DappName=PetstoreClient --additional-properties useES6=false"
+      - run: |
+          echo "PATH ${{ steps.aaaa.outputs.path }}"
+          echo "LOGS ${{ steps.aaaa.outputs.logs }}"
+      - name: upload js artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: generated_js-v3-petstore
+          path: ${{ steps.aaaa.outputs.path }}
