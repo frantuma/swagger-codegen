@@ -1,4 +1,4 @@
-name: Samples Generation
+name: Test action
 
 on:
   workflow_dispatch:
