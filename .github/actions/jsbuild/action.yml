@@ -25,6 +25,7 @@ runs:
         curdir=$(pwd)
         cd ${{ inputs.path }}
         ls -la
+        npm i
         npm i >> ${{ inputs.job-name }}.build.log
         echo "\n****** npm run test ******\n" >> ${{ inputs.job-name }}e.build.log
         npm run test >> ${{ inputs.job-name }}.build.log
