@@ -108,8 +108,8 @@ jobs:
         id: jsbuild
         uses: ./.github/actions/jsbuild
         with:
-          path: generated/${JOB_NAME}
-          job-name: ${JOB_NAME}
+          path: generated/${{ env.JOB_NAME }}
+          job-name: ${{ env.JOB_NAME }}
       - run: |
           echo "PATH ${{ steps.jsbuild.outputs.path }}"
           echo "LOGS ${{ steps.jsbuild.outputs.logs }}"
