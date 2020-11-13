@@ -63,11 +63,11 @@ jobs:
           echo "PATH ${{ steps.generate.outputs.path }}"
           echo "LOGS ${{ steps.generate.outputs.logs }}"
       - name: test success
-        if: contains(['success'],steps.generate.outputs.logs)
+        if: contains(steps.generate.outcome, 'success')
         run: echo "SUCCESS ${{ steps.generate.outputs.logs }}"
 
       - name: upload js artifacts
-        if: contains(['success'],steps.generate.outputs.logs)
+        if: contains(steps.generate.outcome, 'success')
         uses: actions/upload-artifact@v2
         with:
           name: generated_js-v3-petstore
