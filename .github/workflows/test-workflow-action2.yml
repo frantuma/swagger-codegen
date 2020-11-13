@@ -49,14 +49,16 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: codegen-cli
+      - run: echo "job env ${{ jobs.generate-js-v3-petstore.env.LANGUAGE }}"
+      - run: echo "job env 2 $LANGUAGE"
       - name: generate
         id: generate
         continue-on-error: true
         uses: ./.github/actions/generate
         with:
-          language: ${{ jobs.generate-js-v3-petstore.env.LANGUAGE }}"
-          job-name: ${{ jobs.generate-js-v3-petstore.env.JOB_NAME }}"
-          options: ${{ jobs.generate-js-v3-petstore.env.OPTIONS }}"
+          language: ${{ jobs.generate-js-v3-petstore.env.LANGUAGE }}
+          job-name: ${{ jobs.generate-js-v3-petstore.env.JOB_NAME }}
+          options: ${{ jobs.generate-js-v3-petstore.env.OPTIONS }}
       - run: |
           echo "GENERATE outcome ${{ steps.generate.outcome }}"
           echo "PATH ${{ steps.generate.outputs.path }}"
