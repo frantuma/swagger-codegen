@@ -49,14 +49,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: codegen-cli
-      - run: echo "job env = $LANGUAGE"
+      - run: echo "job env = $JOB_NAME"
       - name: generate
         id: generate
         continue-on-error: true
         uses: ./.github/actions/generate
         with:
           language: $LANGUAGE
-          job-name: $JOB_NAME
+          job-name: ${JOB_NAME}
           options: $OPTIONS
       - run: |
           echo "GENERATE outcome ${{ steps.generate.outcome }}"
@@ -70,7 +70,7 @@ jobs:
         if: contains(steps.generate.outcome, 'success')
         uses: actions/upload-artifact@v2
         with:
-          name: generated_$JOB_NAME
+          name: generated_${JOB_NAME}
           path: ${{ steps.generate.outputs.path }}
     env:
       LANGUAGE: "javascript"
@@ -92,9 +92,9 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: generated_$JOB_NAME
+          name: generated_${JOB_NAME}
           # todo replace with job output
-          path: generated/$JOB_NAME
+          path: generated/${JOB_NAME}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -106,8 +106,8 @@ jobs:
         id: jsbuild
         uses: ./.github/actions/jsbuild
         with:
-          path: generated/$JOB_NAME
-          job-name: $JOB_NAME
+          path: generated/${JOB_NAME}
+          job-name: ${JOB_NAME}
       - run: |
           echo "PATH ${{ steps.jsbuild.outputs.path }}"
           echo "LOGS ${{ steps.jsbuild.outputs.logs }}"

@@ -27,6 +27,10 @@ runs:
   steps:
     - run: echo Hello ${{ inputs.spec-url }}.
       shell: bash
+    - run: echo LANG ${{ inputs.language }}.
+      shell: bash
+    - run: echo JOB ${{ inputs.job-name }}.
+      shell: bash
     - id: generate
       name: generate
       run: |
