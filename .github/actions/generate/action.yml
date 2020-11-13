@@ -28,7 +28,7 @@ runs:
         echo Hi ${{ env.INPUT_SPECURL }}.
         echo Hi2 ${{ env.INPUT_SPEC_URL }}.
         echo Hi3 ${{ env.INPUT_SPEC-URL }}.
-        echo "::set-output name=logs::$(echo ${{ env.INPUT_spec-url }})"
+        echo "::set-output name=logs::$(echo YATAY)"
         echo "::set-output name=path::$(echo ${{ inputs.spec-url }})"
       shell: bash
     - run: ${{ github.action_path }}/goodbye.sh
