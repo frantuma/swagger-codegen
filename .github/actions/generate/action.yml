@@ -35,6 +35,7 @@ runs:
         echo Hi3 ${{ env.INPUT_SPEC-URL }}.
         echo "::set-output name=logs::$(echo YATAY)"
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
+      shell: bash
     - run: chmod +x ${{ github.action_path }}/generate.sh
       shell: bash
     - run: ${{ github.action_path }}/generate.sh ${{ inputs.language }} ${{ inputs.job-name }} ${{ inputs.spec-url }} ${{ inputs.options }}
