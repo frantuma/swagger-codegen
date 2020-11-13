@@ -133,9 +133,19 @@ jobs:
       - name: jsbuild
         id: jsbuild
         uses: ./.github/actions/jsbuild
+        continue-on-error: true
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
+      - id: outcome
+        run: |
+          echo "::set-output name=build_outcome::${{ steps.jsbuild.outcome }}"
+          echo ${{ steps.jsbuild.outcome }} > build_outcome_${{ env.JOB_NAME }}
+      - name: upload build outcome
+        uses: actions/upload-artifact@v2
+        with:
+          name: build_outcome_${{ env.JOB_NAME }}
+          path: build_outcome_${{ env.JOB_NAME }}
       - name: upload logs
         uses: actions/upload-artifact@v2
         with:
