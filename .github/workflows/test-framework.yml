@@ -1,4 +1,4 @@
-name: Test action 2
+name: Test Framework
 
 on:
   # execute on demand
@@ -116,9 +116,6 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
-      - run: |
-          echo "PATH ${{ steps.jsbuild.outputs.path }}"
-          echo "LOGS ${{ steps.jsbuild.outputs.logs }}"
       - name: upload logs
         uses: actions/upload-artifact@v2
         with:

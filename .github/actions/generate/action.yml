@@ -28,7 +28,7 @@ runs:
     - id: generate
       name: generate
       run: |
-        logfile=${{ inputs.job-name }}.build.log
+        logfile=${{ inputs.job-name }}.log
         chmod +x ${{ github.action_path }}/generate.sh
         echo -e "\n****** generate ******\n" > $logfile
         ${{ github.action_path }}/generate.sh ${{ inputs.language }} ${{ inputs.job-name }} ${{ inputs.spec-url }} ${{ inputs.options }} >> $logfile
