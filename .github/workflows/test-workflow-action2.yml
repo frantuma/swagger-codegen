@@ -58,7 +58,6 @@ jobs:
           job-name: "js-petstore-v3"
           options: " -DappName=PetstoreClient --additional-properties useES6=false"
       - run: |
-          ${{ steps.generate.outputs.path }}
           echo "GENERATE outcome ${{ steps.generate.outcome }}"
           echo "PATH ${{ steps.generate.outputs.path }}"
           echo "LOGS ${{ steps.generate.outputs.logs }}"
