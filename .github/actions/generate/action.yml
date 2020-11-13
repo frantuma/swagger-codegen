@@ -19,7 +19,7 @@ outputs:
   logs:
     description: "logs"
     value: ${{ steps.generate.outputs.logs }}
-  output-path:
+  path:
     description: "output path"
     value: ${{ steps.generate.outputs.path }}
 runs:
