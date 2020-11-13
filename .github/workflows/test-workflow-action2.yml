@@ -57,10 +57,40 @@ jobs:
           job-name: "js-petstore-v3"
           options: " -DappName=PetstoreClient --additional-properties useES6=false"
       - run: |
-          echo "PATH ${{ steps.aaaa.outputs.path }}"
-          echo "LOGS ${{ steps.aaaa.outputs.logs }}"
+          echo "PATH ${{ steps.generate.outputs.path }}"
+          echo "LOGS ${{ steps.generate.outputs.logs }}"
       - name: upload js artifacts
         uses: actions/upload-artifact@v2
         with:
           name: generated_js-v3-petstore
-          path: ${{ steps.aaaa.outputs.path }}
+          path: ${{ steps.generate.outputs.path }}
+
+  build-js-v3-petstore:
+
+    needs: generate-js-v3-petstore
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - name: Download js artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: generated_js-v3-petstore
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: jsbuild
+        id: jsbuild
+        uses: ./.github/actions/jsbuild
+        with:
+          path: generated/js-v3-petstore
+          job-name: "js-petstore-v3"
+      - run: |
+          echo "PATH ${{ steps.jsbuild.outputs.path }}"
+          echo "LOGS ${{ steps.jsbuild.outputs.logs }}"
