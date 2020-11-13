@@ -20,6 +20,7 @@ runs:
     - id: build
       name: build
       run: |
+        ls -la
         logfile=${{ inputs.job-name }}.build.log
         echo -e "\n****** npm i ******\n" >> $logfile
         curdir=$(pwd)
