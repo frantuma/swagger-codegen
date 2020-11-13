@@ -51,15 +51,23 @@ jobs:
           name: codegen-cli
       - name: generate
         id: generate
+        continue-on-error: true
         uses: ./.github/actions/generate
         with:
           language: "javascript"
           job-name: "js-petstore-v3"
           options: " -DappName=PetstoreClient --additional-properties useES6=false"
       - run: |
+          ${{ steps.generate.outputs.path }}
+          echo "GENERATE outcome ${{ steps.generate.outcome }}"
           echo "PATH ${{ steps.generate.outputs.path }}"
           echo "LOGS ${{ steps.generate.outputs.logs }}"
+      - name: test success
+        if: contains(['success'],steps.generate.outputs.logs)
+        run: echo "SUCCESS ${{ steps.generate.outputs.logs }}"
+
       - name: upload js artifacts
+        if: contains(['success'],steps.generate.outputs.logs)
         uses: actions/upload-artifact@v2
         with:
           name: generated_js-v3-petstore
@@ -81,7 +89,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: generated_js-v3-petstore
-          path: ${{ steps.generate.outputs.path }}
+          # todo replace with job output
+          path: generated/js-v3-petstore
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
