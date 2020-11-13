@@ -81,6 +81,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: generated_js-v3-petstore
+          path: ${{ steps.generate.outputs.path }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
