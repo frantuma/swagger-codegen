@@ -11,23 +11,27 @@ inputs:
   job-name:
     description: 'Job name'
     required: true
-    default: ${{ inputs.spec-url }}
+  options:
+    description: 'Language Options'
+    required: false
+    default: ""
 outputs:
   logs:
     description: "logs"
     value: ${{ steps.generate.outputs.logs }}
-  output-path:
+  path:
     description: "output path"
     value: ${{ steps.generate.outputs.path }}
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.spec-url }}.
-      shell: bash
     - id: generate
+      name: generate
       run: |
-        echo "::set-output name=logs::$(echo ${{ env.INPUT_spec-url }})"
-        echo "::set-output name=path::$(echo ${{ env.INPUT_job-name }})"
-      shell: bash
-    - run: ${{ github.action_path }}/goodbye.sh
+        logfile=${{ inputs.job-name }}.log
+        chmod +x ${{ github.action_path }}/generate.sh
+        echo -e "\n****** generate ******\n" > $logfile
+        ${{ github.action_path }}/generate.sh ${{ inputs.language }} ${{ inputs.job-name }} ${{ inputs.spec-url }} ${{ inputs.options }} >> $logfile
+        echo "::set-output name=logs::$(echo $logfile)"
+        echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
       shell: bash
