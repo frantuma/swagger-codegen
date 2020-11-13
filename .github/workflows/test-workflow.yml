@@ -22,7 +22,6 @@ jobs:
       - name: build codegen
         run: |
           mvn -q -B package -DskipTests
-          ls -la
       - name: prepare codegen cli
         run: mkdir codegen-cli && cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
       - name: upload codegen cli
@@ -50,15 +49,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: codegen-cli
-      - run: ls -la
       - name: generate javascript client v3 using petstore definition
         run: |
           . ./.CI/generate.sh javascript js-v3-petstore null -DappName=PetstoreClient --additional-properties useES6=false
-          du -hcd 2
-          ls -la generated
-
-      #- name: prepare js artifacts
-      #  run: mkdir js-v3-petstore-artifacts && cp -R js-v3-petstore-out js-v3-petstore-artifacts/
       - name: upload js artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -73,7 +66,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x]
 
     steps:
       - name: Download js artifacts
@@ -84,13 +77,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: test so far
+      - name: npm install and test
         run: |
-          ls -la
-          du -hcd 2
-          echo "****** npm i ******" > js-v3-petstore.build.log
+          echo -e "****** npm i ******\n" > js-v3-petstore.build.log
           npm i >> js-v3-petstore.build.log
-          echo "****** npm run test ******" >> js-v3-petstore.build.log
+          echo "\n****** npm run test ******\n" >> js-v3-petstore.build.log
           npm run test >> js-v3-petstore.build.log
       - name: upload logs
         uses: actions/upload-artifact@v2
