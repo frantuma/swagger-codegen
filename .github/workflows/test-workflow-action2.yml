@@ -54,9 +54,9 @@ jobs:
         continue-on-error: true
         uses: ./.github/actions/generate
         with:
-          language: "javascript"
-          job-name: "js-petstore-v3"
-          options: " -DappName=PetstoreClient --additional-properties useES6=false"
+          language: ${{ jobs.generate-js-v3-petstore.env.LANGUAGE }}"
+          job-name: ${{ jobs.generate-js-v3-petstore.env.JOB_NAME }}"
+          options: ${{ jobs.generate-js-v3-petstore.env.OPTIONS }}"
       - run: |
           echo "GENERATE outcome ${{ steps.generate.outcome }}"
           echo "PATH ${{ steps.generate.outputs.path }}"
@@ -65,12 +65,16 @@ jobs:
         if: contains(steps.generate.outcome, 'success')
         run: echo "SUCCESS ${{ steps.generate.outputs.logs }}"
 
-      - name: upload js artifacts
+      - name: upload artifacts
         if: contains(steps.generate.outcome, 'success')
         uses: actions/upload-artifact@v2
         with:
-          name: generated_js-v3-petstore
+          name: generated_j${{ jobs.generate-js-v3-petstore.env.JOB_NAME }}
           path: ${{ steps.generate.outputs.path }}
+    env:
+      LANGUAGE: "javascript"
+      JOB_NAME: "js-petstore-v3"
+      OPTIONS: " -DappName=PetstoreClient --additional-properties useES6=false"
 
   build-js-v3-petstore:
 
@@ -84,12 +88,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Download js artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: generated_js-v3-petstore
+          name: generated_${{ jobs.generate-js-v3-petstore.env.JOB_NAME }}
           # todo replace with job output
-          path: generated/js-v3-petstore
+          path: generated/${{ jobs.generate-js-v3-petstore.env.JOB_NAME }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -101,8 +105,13 @@ jobs:
         id: jsbuild
         uses: ./.github/actions/jsbuild
         with:
-          path: generated/js-v3-petstore
-          job-name: "js-petstore-v3"
+          path: generated/${{ jobs.generate-js-v3-petstore.env.JOB_NAME }}
+          job-name: ${{ jobs.generate-js-v3-petstore.env.JOB_NAME }}
       - run: |
           echo "PATH ${{ steps.jsbuild.outputs.path }}"
           echo "LOGS ${{ steps.jsbuild.outputs.logs }}"
+      - name: upload logs
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.jsbuild.outputs.logs }}
+          path: ${{ steps.jsbuild.outputs.logs }}
