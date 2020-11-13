@@ -23,5 +23,5 @@ jobs:
           language: "javascript"
           job-name: "js-petstore-v3"
       - run: |
-        echo "AAA ${{ steps.aaaa.outputs.path }}"
-        echo "AAA ${{ steps.aaaa.outputs.logs }}"
+          echo "AAA ${{ steps.aaaa.outputs.path }}"
+          echo "AAA ${{ steps.aaaa.outputs.logs }}"
