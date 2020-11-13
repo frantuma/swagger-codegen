@@ -24,9 +24,11 @@ runs:
         echo -e "****** LOGFILE: $logfile\n"
         echo -e "****** npm i ******\n" > $logfile
         curdir=$(pwd)
+        echo -e "****** npm i 2 ******\n" >> $logfile
         cd ${{ inputs.path }}
+        echo -e "****** npm i 3 ******\n" >> $logfile
         npm i >> $logfile
-        echo "\n****** npm run test ******\n" >> $logfile
+        echo -e "\n****** npm run test ******\n" >> $logfile
         npm run test >> $logfile
         echo "::set-output name=logs::$(echo $logfile)"
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
