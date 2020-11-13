@@ -11,7 +11,7 @@ inputs:
   job-name:
     description: 'Job name'
     required: true
-    default: ${{ inputs.language }}
+    default: ${{ inputs.spec-url }}
 outputs:
   logs:
     description: "logs"

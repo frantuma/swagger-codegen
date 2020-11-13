@@ -1,0 +1,32 @@
+name: 'JsBuild'
+description: 'build js with npm'
+inputs:
+  path:
+    description: 'project root path'
+    required: true
+  job-name:
+    description: 'Job name'
+    required: true
+outputs:
+  logs:
+    description: "logs"
+    value: ${{ steps.build.outputs.logs }}
+  path:
+    description: "output path"
+    value: ${{ steps.build.outputs.path }}
+runs:
+  using: "composite"
+  steps:
+    - id: build
+      name: build
+      run: |
+        echo -e "****** npm i ******\n" > ${{ inputs.job-name }}.build.log
+        curdir=$(pwd)
+        cd ${{ inputs.path }}
+        npm i >> ${{ inputs.job-name }}.build.log
+        echo "\n****** npm run test ******\n" >> ${{ inputs.job-name }}e.build.log
+        npm run test >> ${{ inputs.job-name }}.build.log
+        echo "::set-output name=logs::$(echo ${{ inputs.job-name }}.build.log)"
+        echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
+        cd ${curdir}
+      shell: bash
