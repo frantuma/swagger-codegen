@@ -26,8 +26,8 @@ runs:
         echo -e "\n****** npm i ******\n" >> $logfile
         curdir=$(pwd)
         cd ${{ inputs.path }}
-        npm i >> $curdir/$logfile
+        npm i 2>&1 | tee --append $curdir/$logfile
         echo -e "\n****** npm run test ******\n" >> $curdir/$logfile
-        npm run test >> $curdir/$logfile
+        npm run test 2>&1 | tee --append $curdir/$logfile
         cd ${curdir}
       shell: bash
