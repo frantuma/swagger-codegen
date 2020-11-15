@@ -1,4 +1,4 @@
-name: Test Framework Single
+name: Test Framework Dynamic
 
 on:
   # execute on demand
@@ -18,6 +18,10 @@ on:
       jobName:
         description: 'job name'
         required: true
+      buildAction:
+        description: 'build action name'
+        required: true
+        default: "jsbuild"
 
 jobs:
 
@@ -103,6 +107,7 @@ jobs:
       JOB_NAME: ${{ github.event.inputs.jobName }}
       OPTIONS: ${{ github.event.inputs.options }}
       SPEC_URL: ${{ github.event.inputs.specUrl }}
+      BUILD_ACTION: ${{ github.event.inputs.buildAction }}
 
   build:
 
@@ -132,7 +137,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: build
         id: build
-        uses: ./.github/actions/jsbuild
+        uses: ./.github/actions/${{ env.BUILD_ACTION }}
         continue-on-error: true
         with:
           path: generated/${{ env.JOB_NAME }}
@@ -156,3 +161,4 @@ jobs:
       JOB_NAME: ${{ github.event.inputs.jobName }}
       OPTIONS: ${{ github.event.inputs.options }}
       SPEC_URL: ${{ github.event.inputs.specUrl }}
+      BUILD_ACTION: ${{ github.event.inputs.buildAction }}
