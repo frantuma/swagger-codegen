@@ -21,13 +21,13 @@ runs:
       name: build
       run: |
         logfile=${{ inputs.job-name }}.log
+        echo "::set-output name=logs::$(echo $logfile)"
+        echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
         echo -e "\n****** npm i ******\n" >> $logfile
         curdir=$(pwd)
         cd ${{ inputs.path }}
         npm i >> $curdir/$logfile
         echo -e "\n****** npm run test ******\n" >> $curdir/$logfile
         npm run test >> $curdir/$logfile
-        echo "::set-output name=logs::$(echo $logfile)"
-        echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
         cd ${curdir}
       shell: bash

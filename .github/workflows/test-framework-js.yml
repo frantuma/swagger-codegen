@@ -56,6 +56,10 @@ jobs:
       matrix:
         java: [ 8 ]
 
+
+    outputs:
+      generate_outcome: ${{ steps.outcome.outputs.generate_outcome }}
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -73,24 +77,27 @@ jobs:
           language: $LANGUAGE
           job-name: ${JOB_NAME}
           options: $OPTIONS
+      - id: outcome
+        run: |
+          echo "::set-output name=generate_outcome::${{ steps.generate.outcome }}"
+          echo ${{ steps.generate.outcome }} > generate_outcome_${{ env.JOB_NAME }}
+      - name: upload generate outcome
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.JOB_NAME }}generate_outcome
+          path: generate_outcome_${{ env.JOB_NAME }}
       - name: upload generate logs
         uses: actions/upload-artifact@v2
         with:
-          name: generate_logs_${{ env.JOB_NAME }}
+          name: ${{ env.JOB_NAME }}generate_logs
           path: ${{ steps.generate.outputs.logs }}
       - name: upload generated code
         if: contains(steps.generate.outcome, 'success')
         uses: actions/upload-artifact@v2
         with:
-          name: generated_${{ env.JOB_NAME }}
+          name: ${{ env.JOB_NAME }}generated
           path: ${{ steps.generate.outputs.path }}
-      - run: |
-          echo ${{ steps.generate.outcome }} > generate_outcome_${{ env.JOB_NAME }}
-      - name: upload generate outcome
-        uses: actions/upload-artifact@v2
-        with:
-          name: generate_outcome_${{ env.JOB_NAME }}
-          path: generate_outcome_${{ env.JOB_NAME }}
+
     env:
       LANGUAGE: ${{ github.event.inputs.language }}
       JOB_NAME: ${{ github.event.inputs.jobName }}
@@ -100,7 +107,7 @@ jobs:
   build:
 
     needs: generate
-
+    if: contains(needs.generate.outputs.generate_outcome, 'success')
     runs-on: ubuntu-latest
 
     strategy:
@@ -112,35 +119,45 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: generated_${{ env.JOB_NAME }}
+          name: ${{ env.JOB_NAME }}generated
           path: generated/${{ env.JOB_NAME }}
       - name: Download logs
         uses: actions/download-artifact@v2
         with:
-          name: generate_logs_${{ env.JOB_NAME }}
+          name: ${{ env.JOB_NAME }}generate_logs
           #path: ${{ env.JOB_NAME }}.build.log
-      ###############################################
-      ##### DYNAMIC: Dependent on build environment
-      ###############################################
+    ###############################################
+    ##### DYNAMIC: Dependent on build environment
+    ###############################################
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      ###############################################
-      ##### DYNAMIC: Dependent on build environment
-      ##### TODO: pass also build buildCommands coming from workflow input steps
-      ###############################################
-      - name: jsbuild
-        id: jsbuild
+    ###############################################
+    ##### DYNAMIC: Dependent on build environment
+    ##### TODO: pass also build buildCommands coming from workflow input steps
+    ###############################################
+      - name: build
+        id: build
         uses: ./.github/actions/jsbuild
+        continue-on-error: true
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
+      - id: outcome
+        run: |
+          echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
+          echo ${{ steps.build.outcome }} > ${{ env.JOB_NAME }}build_outcome
+      - name: upload build outcome
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.JOB_NAME }}build_outcome
+          path: ${{ env.JOB_NAME }}build_outcome
       - name: upload logs
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.jsbuild.outputs.logs }}
-          path: ${{ steps.jsbuild.outputs.logs }}
+          name: ${{ env.JOB_NAME }}logs
+          path: ${{ steps.build.outputs.logs }}
     env:
       LANGUAGE: ${{ github.event.inputs.language }}
       JOB_NAME: ${{ github.event.inputs.jobName }}
