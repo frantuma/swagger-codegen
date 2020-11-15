@@ -76,6 +76,7 @@ jobs:
         with:
           language: $LANGUAGE
           job-name: ${JOB_NAME}
+          spec-url: ${SPEC_URL}
           options: $OPTIONS
       - id: outcome
         run: |
