@@ -23,7 +23,7 @@ runs:
         logfile=${{ inputs.job-name }}.log
         echo "::set-output name=logs::$(echo $logfile)"
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
-        echo -e "\n****** npm i ******\n" >> $logfile
+        echo -e "\n****** mvn clean package ******\n" >> $logfile
         curdir=$(pwd)
         cd ${{ inputs.path }}
         mvn clean package | tee --append $curdir/$logfile

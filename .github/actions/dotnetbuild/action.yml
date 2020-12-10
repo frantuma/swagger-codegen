@@ -23,8 +23,10 @@ runs:
         logfile=${{ inputs.job-name }}.log
         echo "::set-output name=logs::$(echo $logfile)"
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
+        echo -e "\n****** dotnet build ******\n" >> $logfile
         curdir=$(pwd)
         cd ${{ inputs.path }}
+        echo -e "\n****** dotnet build ******\n" >> $curdir/$logfile
         dotnet restore src/IO.Swagger/ | tee --append $curdir/$logfile
         dotnet build src/IO.Swagger/ | tee --append $curdir/$logfile
         cd ${curdir}
