@@ -1,4 +1,4 @@
-name: Test Framework DotNet
+name: Test Framework Python
 
 on:
   # execute on demand
