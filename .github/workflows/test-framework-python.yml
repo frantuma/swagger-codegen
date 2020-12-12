@@ -132,7 +132,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: build
         id: build
-        uses: ./.github/actions/python
+        uses: ./.github/actions/pythonbuild
         continue-on-error: true
         with:
           path: generated/${{ env.JOB_NAME }}
