@@ -29,11 +29,3 @@ runs:
         mvn clean package | tee --append $curdir/$logfile
         cd ${curdir}
       shell: bash
-    - id: commit_sha
-      name: commit_sha
-      run: |
-        logfile=${{ inputs.job-name }}.commit.log
-        echo "::set-output name=logs::$(echo $logfile)"
-        echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
-        echo -e ${GITHUB_SHA} >> $logfile
-      shell: bash
