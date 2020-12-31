@@ -140,8 +140,7 @@ jobs:
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
-          echo ${{ steps.build.outcome }} > ${{ env.JOB_NAME }}build_outcome
-          echo ${{ env.GITHUB_SHA }} > ${{ env.JOB_NAME }}commit_sha
+          echo "${{ steps.build.outcome }},${{ env.GITHUB_SHA }}" > ${{ env.JOB_NAME }}build_outcome
       - name: upload build outcome
         uses: actions/upload-artifact@v2
         with:
