@@ -28,11 +28,15 @@ runs:
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
         curdir=$(pwd)
         cd ${{ inputs.path }}
-        comms=$(echo ${{ inputs.build-commands }} | tr "__&&__" "\n")
-        for line in $comms
-        do
-          echo -e "\n****** executing: $line ******\n" >> $logfile
-          $line | tee --append $curdir/$logfile
+
+        comms=${{ inputs.build-commands }}
+        while [ "$comms" ] ;do
+            iter=${comms%%__&&__*}
+            echo -e "\n****** executing: $iter ******\n" >> $logfile
+            $iter | tee --append $curdir/$logfile
+            [ "$comms" = "$iter" ] && \
+                comms='' || \
+                comms="${comms#*__&&__}"
         done
         cd ${curdir}
       shell: bash
