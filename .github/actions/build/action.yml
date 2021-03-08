@@ -24,7 +24,6 @@ runs:
       name: build
       run: |
         logfile=${{ inputs.job-name }}.log
-        echo "::set-output name=logs::$(echo $logfile)"
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
         curdir=$(pwd)
         cd ${{ inputs.path }}
@@ -39,4 +38,5 @@ runs:
                 comms="${comms#*__&&__}"
         done
         cd ${curdir}
+        echo "::set-output name=logs::$(echo $logfile)"
       shell: bash
