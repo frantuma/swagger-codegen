@@ -77,10 +77,10 @@ jobs:
         continue-on-error: true
         uses: ./.github/actions/generate
         with:
-          language: $LANGUAGE
-          job-name: ${JOB_NAME}
-          spec-url: ${SPEC_URL}
-          options: $OPTIONS
+          language: ${{ env.LANGUAGE }}
+          job-name: ${{ env.JOB_NAME }}
+          spec-url: ${{ env.SPEC_URL }}
+          options: ${{ env.OPTIONS }}
       - id: outcome
         run: |
           echo "::set-output name=generate_outcome::${{ steps.generate.outcome }}"
@@ -107,6 +107,7 @@ jobs:
       JOB_NAME: ${{ github.event.inputs.jobName }}
       OPTIONS: ${{ github.event.inputs.options }}
       SPEC_URL: ${{ github.event.inputs.specUrl }}
+      BUILD_COMMANDS: ${{ github.event.inputs.buildCommands }}
 
   build:
 
@@ -115,9 +116,14 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+    ###############################################
+    ##### DYNAMIC: Dependent on build environment
+    ###############################################
       matrix:
         dotnet-version: [3.1.x]
-
+    ###############################################
+    ##### END DYNAMIC: Dependent on build environment
+    ###############################################
     steps:
       - uses: actions/checkout@v2
       - name: Download artifacts
@@ -129,17 +135,24 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{ env.JOB_NAME }}generate_logs
+    ###############################################
+    ##### DYNAMIC: Dependent on build environment
+    ###############################################
       - name: Set up DotNet 3.1.x
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+    ###############################################
+    ##### END DYNAMIC: Dependent on build environment
+    ###############################################
       - name: build
         id: build
-        uses: ./.github/actions/dotnetbuild
+        uses: ./.github/actions/build
         continue-on-error: true
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
+          build-commands: ${{ env.BUILD_COMMANDS }}
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
@@ -159,3 +172,4 @@ jobs:
       JOB_NAME: ${{ github.event.inputs.jobName }}
       OPTIONS: ${{ github.event.inputs.options }}
       SPEC_URL: ${{ github.event.inputs.specUrl }}
+      BUILD_COMMANDS: ${{ github.event.inputs.buildCommands }}

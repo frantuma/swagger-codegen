@@ -31,12 +31,12 @@ runs:
         comms=${{ inputs.build-commands }}
         while [ "$comms" ] ;do
             iter=${comms%%__&&__*}
-            echo -e "\n****** executing: $iter ******\n" >> $logfile
-            $iter  2>&1 | tee --append $logfile
+            echo -e "\n****** executing: $iter ******\n" >> $curdir/$logfile
+            $iter  2>&1 | tee --append $curdir/$logfile
             [ "$comms" = "$iter" ] && \
                 comms='' || \
                 comms="${comms#*__&&__}"
         done
         cd ${curdir}
-        echo "::set-output name=logs::$(echo $logfile)"
+        echo "::set-output name=logs::$(echo $curdir/$logfile)"
       shell: bash

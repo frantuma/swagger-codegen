@@ -116,9 +116,14 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      ###############################################
+      ##### DYNAMIC: Dependent on build environment
+      ###############################################
       matrix:
         node-version: [12.x]
-
+      ###############################################
+      ##### END DYNAMIC: Dependent on build environment
+      ###############################################
     steps:
       - uses: actions/checkout@v2
       - name: Download artifacts
