@@ -18,6 +18,9 @@ on:
       jobName:
         description: 'job name'
         required: true
+      buildCommands:
+        description: 'build commands for generated code'
+        required: true
 
 jobs:
 
