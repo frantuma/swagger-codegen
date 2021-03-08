@@ -23,7 +23,7 @@ runs:
     - id: build
       name: build
       run: |
-        logfile=${{ inputs.job-name }}.log
+        logfile=${{ inputs.job-name }}-build.log
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
         curdir=$(pwd)
         cd ${{ inputs.path }}
