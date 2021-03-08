@@ -160,4 +160,3 @@ jobs:
       JOB_NAME: ${{ github.event.inputs.jobName }}
       OPTIONS: ${{ github.event.inputs.options }}
       SPEC_URL: ${{ github.event.inputs.specUrl }}
-      BUILD_COMMANDS: ${{ github.event.inputs.buildCommands }}
