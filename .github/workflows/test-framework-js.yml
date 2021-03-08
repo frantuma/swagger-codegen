@@ -138,11 +138,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
     ###############################################
-    ##### DYNAMIC: Dependent on build environment
+    ##### END DYNAMIC: Dependent on build environment
     ###############################################
       - name: build
         id: build
-        uses: ./.github/actions/jsbuild
+        uses: ./.github/actions/build
         continue-on-error: true
         with:
           path: generated/${{ env.JOB_NAME }}
