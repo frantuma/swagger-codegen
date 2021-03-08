@@ -32,7 +32,7 @@ runs:
         while [ "$comms" ] ;do
             iter=${comms%%__&&__*}
             echo -e "\n****** executing: $iter ******\n" >> $logfile
-            $iter | tee --append $curdir/$logfile
+            $iter  2>&1 | tee --append $logfile
             [ "$comms" = "$iter" ] && \
                 comms='' || \
                 comms="${comms#*__&&__}"
