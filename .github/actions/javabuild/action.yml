@@ -23,9 +23,9 @@ runs:
         logfile=${{ inputs.job-name }}.log
         echo "::set-output name=logs::$(echo $logfile)"
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
-        echo -e "\n****** mvn clean package ******\n" >> $logfile
+        echo -e "\n****** ${{ github.event.inputs.buildCommands }}  ******\n" >> $logfile
         curdir=$(pwd)
         cd ${{ inputs.path }}
-        mvn clean package | tee --append $curdir/$logfile
+        ${{ github.event.inputs.buildCommands }} | tee --append $curdir/$logfile
         cd ${curdir}
       shell: bash
