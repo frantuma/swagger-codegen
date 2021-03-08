@@ -77,10 +77,10 @@ jobs:
         continue-on-error: true
         uses: ./.github/actions/generate
         with:
-          language: $LANGUAGE
-          job-name: ${JOB_NAME}
-          spec-url: ${SPEC_URL}
-          options: $OPTIONS
+          language: ${{ env.LANGUAGE }}
+          job-name: ${{ env.JOB_NAME }}
+          spec-url: ${{ env.SPEC_URL }}
+          options: ${{ env.OPTIONS }}
       - id: outcome
         run: |
           echo "::set-output name=generate_outcome::${{ steps.generate.outcome }}"
@@ -107,6 +107,7 @@ jobs:
       JOB_NAME: ${{ github.event.inputs.jobName }}
       OPTIONS: ${{ github.event.inputs.options }}
       SPEC_URL: ${{ github.event.inputs.specUrl }}
+      BUILD_COMMANDS: ${{ github.event.inputs.buildCommands }}
 
   build:
 
