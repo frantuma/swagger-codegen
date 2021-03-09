@@ -26,43 +26,20 @@ runs:
         buildlogfile=${{ inputs.job-name }}-build.log
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
         curdir=$(pwd)
-        echo "AA ${{ inputs.build-commands }}"
         echo -e "\n****** BUILD ******\n" >> $curdir/$buildlogfile
-        echo "AA2 ${{ inputs.build-commands }}"
         cd ${{ inputs.path }}
-        echo "AA3 ${{ inputs.build-commands }}"
-        #comms=$(echo ${{ inputs.build-commands }})
-        #echo "AA4 comms $comms"
         echo -e "${{ inputs.build-commands }}" > $curdir/buildcommands.log
-        echo "AA4"
-        #buildcommands=${{ inputs.build-commands }}
-        #buildcommands=TESTCOMMANDS
         buildcommands=$(cat $curdir/buildcommands.log)
-        echo "AA5"
-        #echo "buildcommands=${{ inputs.build-commands }}" >> $GITHUB_ENV
-        #echo "buildcommands=TESTCOMMAND" >> $GITHUB_ENV
-        echo "comms 1 ${{ env.buildcommands }}"
-        echo "comms 2 ${buildcommands}"
-        echo "comms 3" $buildcommands
-        echo "comms 4" ${{ env.buildcommands }}
 
-        #echo "buildcommands=$(echo ${{ inputs.build-commands }})" >> $GITHUB_ENV
-        #echo "comms 12 ${{ env.buildcommands }}"
-        #echo "comms 22 ${buildcommands}"
-        #echo "comms 32" $buildcommands
-        #echo "comms 42" ${{ env.buildcommands }}
         while [ "$buildcommands" ] ;do
-            echo "comms loop $buildcommands"
             iter=${buildcommands%%__&&__*}
-            echo "iter $iter"
+            echo -e "\n****** executing: $iter ******\n"
             echo -e "\n****** executing: $iter ******\n" >> $curdir/$buildlogfile
-            echo -e "\n****** executing2: $iter ******\n"  2>&1 | tee --append $curdir/$buildlogfile
-            # $iter  2>&1 | tee --append $curdir/$buildlogfile
+            $iter  2>&1 | tee --append $curdir/$buildlogfile
             [ "$buildcommands" = "$iter" ] && \
                 buildcommands='' || \
                 buildcommands="${buildcommands#*__&&__}"
         done
-        echo "BB"
         cd ${curdir}
         echo "::set-output name=logs::$(echo $curdir/$buildlogfile)"
       shell: bash
