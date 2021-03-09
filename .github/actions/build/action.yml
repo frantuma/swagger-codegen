@@ -26,16 +26,19 @@ runs:
         buildlogfile=${{ inputs.job-name }}-build.log
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
         curdir=$(pwd)
-        echo "AA"
+        echo "AA ${{ inputs.build-commands }}"
         echo -e "\n****** BUILD ******\n" >> $curdir/$buildlogfile
         cd ${{ inputs.path }}
 
         comms=${{ inputs.build-commands }}
+        echo "comms 1 $comms"
         while [ "$comms" ] ;do
+            echo "comms loop $comms"
             iter=${comms%%__&&__*}
             echo "iter $iter"
             echo -e "\n****** executing: $iter ******\n" >> $curdir/$buildlogfile
-            $iter  2>&1 | tee --append $curdir/$buildlogfile
+            echo -e "\n****** executing2: $iter ******\n"  2>&1 | tee --append $curdir/$buildlogfile
+            # $iter  2>&1 | tee --append $curdir/$buildlogfile
             [ "$comms" = "$iter" ] && \
                 comms='' || \
                 comms="${comms#*__&&__}"
