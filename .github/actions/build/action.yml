@@ -33,10 +33,12 @@ runs:
         echo "AA3 ${{ inputs.build-commands }}"
         #comms=$(echo ${{ inputs.build-commands }})
         #echo "AA4 comms $comms"
-        echo ${{ inputs.build-commands }} > buildcommands.log
+        echo -e "${{ inputs.build-commands }}" > $curdir/buildcommands.log
+        echo "AA4"
         #buildcommands=${{ inputs.build-commands }}
         #buildcommands=TESTCOMMANDS
-        buildcommands=$(echo buildcommands.log)
+        buildcommands=$(echo $curdir/buildcommands.log)
+        echo "AA5"
         #echo "buildcommands=${{ inputs.build-commands }}" >> $GITHUB_ENV
         #echo "buildcommands=TESTCOMMAND" >> $GITHUB_ENV
         echo "comms 1 ${{ env.buildcommands }}"
