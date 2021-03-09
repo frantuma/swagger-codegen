@@ -34,7 +34,8 @@ runs:
         #comms=$(echo ${{ inputs.build-commands }})
         #echo "AA4 comms $comms"
         #buildcommands=${{ inputs.build-commands }}
-        echo "buildcommands=${{ inputs.build-commands }}" >> $GITHUB_ENV
+        #echo "buildcommands=${{ inputs.build-commands }}" >> $GITHUB_ENV
+        echo "buildcommands=TESTCOMMAND" >> $GITHUB_ENV
         echo "comms 1 ${{ env.buildcommands }}"
         echo "comms 2 ${buildcommands}"
         echo "comms 3" $buildcommands
