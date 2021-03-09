@@ -33,8 +33,9 @@ runs:
         echo "AA3 ${{ inputs.build-commands }}"
         #comms=$(echo ${{ inputs.build-commands }})
         #echo "AA4 comms $comms"
-        buildcommands=${{ inputs.build-commands }}
-        echo "comms 1 $buildcommands"
+        #buildcommands=${{ inputs.build-commands }}
+        echo "buildcommands=${{ echo inputs.build-commands }}" >> $GITHUB_ENV
+        echo "comms 1 ${{ env.buildcommands }}}"
         while [ "$buildcommands" ] ;do
             echo "comms loop $buildcommands"
             iter=${buildcommands%%__&&__*}
