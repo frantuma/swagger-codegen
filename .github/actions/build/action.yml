@@ -28,8 +28,11 @@ runs:
         curdir=$(pwd)
         echo "AA ${{ inputs.build-commands }}"
         echo -e "\n****** BUILD ******\n" >> $curdir/$buildlogfile
+        echo "AA2 ${{ inputs.build-commands }}"
         cd ${{ inputs.path }}
-
+        echo "AA3 ${{ inputs.build-commands }}"
+        comms=$(echo ${{ inputs.build-commands }})
+        echo "AA4 comms $comms"
         comms=${{ inputs.build-commands }}
         echo "comms 1 $comms"
         while [ "$comms" ] ;do
