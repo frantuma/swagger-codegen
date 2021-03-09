@@ -155,6 +155,7 @@ jobs:
           build-commands: ${{ env.BUILD_COMMANDS }}
       - id: outcome
         run: |
+          echo "AAAAAA ${{ steps.build.outputs.logs }}"
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
           echo ${{ steps.build.outcome }} > ${{ env.JOB_NAME }}build_outcome
       - name: upload build outcome

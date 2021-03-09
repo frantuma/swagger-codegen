@@ -1,4 +1,4 @@
-name: 'Build'
+name: 'Builder'
 description: 'build project'
 inputs:
   path:
@@ -23,20 +23,21 @@ runs:
     - id: build
       name: build
       run: |
-        logfile=${{ inputs.job-name }}-build.log
+        buildlogfile=${{ inputs.job-name }}-build.log
         echo "::set-output name=path::$(echo generated/${{ inputs.job-name }})"
         curdir=$(pwd)
+        echo -e "\n****** BUILD ******\n" >> $curdir/$buildlogfile
         cd ${{ inputs.path }}
 
         comms=${{ inputs.build-commands }}
         while [ "$comms" ] ;do
             iter=${comms%%__&&__*}
-            echo -e "\n****** executing: $iter ******\n" >> $curdir/$logfile
-            $iter  2>&1 | tee --append $curdir/$logfile
+            echo -e "\n****** executing: $iter ******\n" >> $curdir/$buildlogfile
+            $iter  2>&1 | tee --append $curdir/$buildlogfile
             [ "$comms" = "$iter" ] && \
                 comms='' || \
                 comms="${comms#*__&&__}"
         done
         cd ${curdir}
-        echo "::set-output name=logs::$(echo $curdir/$logfile)"
+        echo "::set-output name=logs::$(echo $curdir/$buildlogfile)"
       shell: bash
