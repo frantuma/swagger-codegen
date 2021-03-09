@@ -34,17 +34,19 @@ runs:
         #comms=$(echo ${{ inputs.build-commands }})
         #echo "AA4 comms $comms"
         #buildcommands=${{ inputs.build-commands }}
+        buildcommands=TESTCOMMANDS
         #echo "buildcommands=${{ inputs.build-commands }}" >> $GITHUB_ENV
-        echo "buildcommands=TESTCOMMAND" >> $GITHUB_ENV
+        #echo "buildcommands=TESTCOMMAND" >> $GITHUB_ENV
         echo "comms 1 ${{ env.buildcommands }}"
         echo "comms 2 ${buildcommands}"
         echo "comms 3" $buildcommands
         echo "comms 4" ${{ env.buildcommands }}
-        echo "buildcommands=$(echo ${{ inputs.build-commands }})" >> $GITHUB_ENV
-        echo "comms 12 ${{ env.buildcommands }}"
-        echo "comms 22 ${buildcommands}"
-        echo "comms 32" $buildcommands
-        echo "comms 42" ${{ env.buildcommands }}
+
+        #echo "buildcommands=$(echo ${{ inputs.build-commands }})" >> $GITHUB_ENV
+        #echo "comms 12 ${{ env.buildcommands }}"
+        #echo "comms 22 ${buildcommands}"
+        #echo "comms 32" $buildcommands
+        #echo "comms 42" ${{ env.buildcommands }}
         while [ "$buildcommands" ] ;do
             echo "comms loop $buildcommands"
             iter=${buildcommands%%__&&__*}
