@@ -31,20 +31,20 @@ runs:
         echo "AA2 ${{ inputs.build-commands }}"
         cd ${{ inputs.path }}
         echo "AA3 ${{ inputs.build-commands }}"
-        comms=$(echo ${{ inputs.build-commands }})
-        echo "AA4 comms $comms"
-        comms=${{ inputs.build-commands }}
-        echo "comms 1 $comms"
-        while [ "$comms" ] ;do
-            echo "comms loop $comms"
-            iter=${comms%%__&&__*}
+        #comms=$(echo ${{ inputs.build-commands }})
+        #echo "AA4 comms $comms"
+        buildcommands=${{ inputs.build-commands }}
+        echo "comms 1 $buildcommands"
+        while [ "$buildcommands" ] ;do
+            echo "comms loop $buildcommands"
+            iter=${buildcommands%%__&&__*}
             echo "iter $iter"
             echo -e "\n****** executing: $iter ******\n" >> $curdir/$buildlogfile
             echo -e "\n****** executing2: $iter ******\n"  2>&1 | tee --append $curdir/$buildlogfile
             # $iter  2>&1 | tee --append $curdir/$buildlogfile
-            [ "$comms" = "$iter" ] && \
-                comms='' || \
-                comms="${comms#*__&&__}"
+            [ "$buildcommands" = "$iter" ] && \
+                buildcommands='' || \
+                buildcommands="${buildcommands#*__&&__}"
         done
         echo "BB"
         cd ${curdir}
