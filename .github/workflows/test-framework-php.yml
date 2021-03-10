@@ -40,7 +40,8 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: build codegen
         run: |
-          mvn -q -B package -DskipTests
+          mvn -version
+          mvn -q -B package -DskipTests -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.retryHandler.count=3
       - name: prepare codegen cli
         run: mkdir codegen-cli && cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
       - name: upload codegen cli
