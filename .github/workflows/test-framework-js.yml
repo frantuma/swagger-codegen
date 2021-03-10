@@ -44,12 +44,12 @@ jobs:
       - name: build codegen
         run: |
           mkdir codegen-cli
-          if [[ $VERSION == 3* ]]
+          if [[ ${{ env.VERSION }} == 3* ]]
           then
-          	wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/$VERSION/swagger-codegen-cli-$VERSION.jar -O codegen-cli/swagger-codegen-cli.jar
-          elif [[ $VERSION == 2* ]]
+          	wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/${{ env.VERSION }}/swagger-codegen-cli-${{ env.VERSION }}.jar -O codegen-cli/swagger-codegen-cli.jar
+          elif [[ ${{ env.VERSION }} == 2* ]]
           then
-          	wget https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/$VERSION/swagger-codegen-cli-$VERSION.jar -O codegen-cli/swagger-codegen-cli.jar
+          	wget https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/${{ env.VERSION }}/swagger-codegen-cli-${{ env.VERSION }}.jar -O codegen-cli/swagger-codegen-cli.jar
           else
             mvn -version
             mvn -q -B package -DskipTests -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.retryHandler.count=3
