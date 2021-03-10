@@ -29,6 +29,7 @@ runs:
         echo -e "\n****** BUILD ******\n" >> $curdir/$buildlogfile
         cd ${{ inputs.path }}
         echo -e "${{ inputs.build-commands }}" > $curdir/buildcommands.log
+        echo "::set-output name=logs::$(echo $curdir/$buildlogfile)"
         buildcommands=$(cat $curdir/buildcommands.log)
 
         while [ "$buildcommands" ] ;do
