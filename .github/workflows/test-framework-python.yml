@@ -21,6 +21,9 @@ on:
       buildCommands:
         description: 'build commands for generated code'
         required: true
+      version:
+        description: 'exact release or snapshot codegen version'
+        required: true
 
 jobs:
 
@@ -40,15 +43,28 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: build codegen
         run: |
-          mvn -version
-          mvn -q -B package -DskipTests -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.retryHandler.count=3
-      - name: prepare codegen cli
-        run: mkdir codegen-cli && cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
+          mkdir codegen-cli
+          if [[ $VERSION == 3* ]]
+          then
+          	wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/$VERSION/swagger-codegen-cli-$VERSION.jar -O codegen-cli/swagger-codegen-cli.jar
+          elif [[ $VERSION == 2* ]]
+          then
+          	wget https://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/$VERSION/swagger-codegen-cli-$VERSION.jar -O codegen-cli/swagger-codegen-cli.jar
+          else
+            mvn -version
+            mvn -q -B package -DskipTests -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.retryHandler.count=3
+            cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
+          fi
+        with:
+          version: ${{ env.VERSION }}
       - name: upload codegen cli
         uses: actions/upload-artifact@v2
         with:
           name: codegen-cli
           path: codegen-cli
+
+    env:
+      VERSION: ${{ github.event.inputs.version }}
 
   generate:
 
@@ -108,6 +124,8 @@ jobs:
       JOB_NAME: ${{ github.event.inputs.jobName }}
       OPTIONS: ${{ github.event.inputs.options }}
       SPEC_URL: ${{ github.event.inputs.specUrl }}
+      BUILD_COMMANDS: ${{ github.event.inputs.buildCommands }}
+      VERSION: ${{ github.event.inputs.version }}
 
   build:
 
