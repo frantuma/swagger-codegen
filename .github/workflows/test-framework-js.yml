@@ -55,8 +55,6 @@ jobs:
             mvn -q -B package -DskipTests -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.retryHandler.count=3
             cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
           fi
-        with:
-          version: ${{ env.VERSION }}
       - name: upload codegen cli
         uses: actions/upload-artifact@v2
         with:
