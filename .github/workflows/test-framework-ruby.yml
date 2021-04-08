@@ -139,7 +139,7 @@ jobs:
       ##### DYNAMIC: Dependent on build environment
       ###############################################
       matrix:
-        ruby-version: [2.7]
+        ruby: ['3.0']
       ###############################################
       ##### END DYNAMIC: Dependent on build environment
       ###############################################
@@ -158,9 +158,9 @@ jobs:
     ##### DYNAMIC: Dependent on build environment
     ###############################################
       - name: Set up Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ matrix.ruby-version }}
+          ruby-version: ${{ matrix.ruby }}
     ###############################################
     ##### END DYNAMIC: Dependent on build environment
     ###############################################
