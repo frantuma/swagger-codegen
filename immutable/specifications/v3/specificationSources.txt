@@ -1,0 +1,12 @@
+petstore3.json -> https://petstore3.swagger.io/api/v3/openapi.json
+petstore3fake.yaml -> https://raw.githubusercontent.com/swagger-api/swagger-codegen/4c4ff8e261e3199cc50366a12af8cca79ad3a870/modules/swagger-codegen/src/test/resources/3_0_0/petstore-with-fake-endpoints-models-for-testing.yaml
+    from codegen test dir, fake model for testing..
+petstore3composed.json -> https://raw.githubusercontent.com/swagger-api/swagger-codegen/4c4ff8e261e3199cc50366a12af8cca79ad3a870/modules/swagger-codegen/src/test/resources/3_0_0/petstore-with-composed-schemas.yaml
+    from codegen test dir, petstore with composed schemas..
+petstoreSimple3.yaml -> https://raw.githubusercontent.com/swagger-api/swagger-codegen/ad20db691e6fb52fc0c625f940c00ec336780557/modules/swagger-codegen/src/test/resources/3_0_0/petstore-simple.yaml
+    from codegen test dir
+petstoreMixed3.yaml -> https://raw.githubusercontent.com/swagger-api/swagger-codegen/578053067ac886a1795962aa3c30da0154b3718d/modules/swagger-codegen/src/test/resources/3_0_0/petstore-mixed.yaml
+    from codegen test dir
+html2BearerAuthIssue3.yaml -> https://raw.githubusercontent.com/swagger-api/swagger-codegen/8a8efcf44dc5cfa338fcf53b5ba8757cde86f24a/modules/swagger-codegen/src/test/resources/3_0_0/html2BearerAuthIssue.yaml
+    from codegen test dir
+
