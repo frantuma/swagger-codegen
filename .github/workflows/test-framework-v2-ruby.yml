@@ -30,7 +30,6 @@ jobs:
           cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
 
           mkdir test-cfg-files
-          cp samples/client/petstore/python/pom.xml test-cfg-files
           cp samples/client/petstore/python/petstore_profiling.rb test-cfg-files
           cp samples/client/petstore/python/press_anykey_to_continue.sh test-cfg-files
           cp samples/client/petstore/python/Rakefile test-cfg-files
@@ -153,7 +152,7 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
-          build-commands: mvn verify
+          build-commands: bundle install --path vendor/bundle && bundle exec rspec
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
