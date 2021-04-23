@@ -141,6 +141,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: python-v2-sample-test-config-files
+          path: generated/${{ env.JOB_NAME }}
     ###############################################
     ##### END DYNAMIC: Dependent on build environment
     ###############################################
