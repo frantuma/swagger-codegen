@@ -152,10 +152,8 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
-          build-commands: bundle install --path vendor/bundle
-      - name: bundle
-        id: bundle
-        run: bundle exec rspec
+          build-commands: "bundle install --path vendor/bundle && bundle exec rspec"
+
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
