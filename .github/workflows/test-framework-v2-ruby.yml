@@ -30,6 +30,7 @@ jobs:
           cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
 
           mkdir test-cfg-files
+          cp samples/client/petstore/ruby/pom.xml test-cfg-files
           cp samples/client/petstore/ruby/petstore_profiling.rb test-cfg-files
           cp samples/client/petstore/ruby/press_anykey_to_continue.sh test-cfg-files
           cp samples/client/petstore/ruby/Rakefile test-cfg-files
@@ -116,6 +117,7 @@ jobs:
       ###############################################
       matrix:
         ruby: ['3.0']
+        java: [ 8 ]
       ###############################################
       ##### END DYNAMIC: Dependent on build environment
       ###############################################
@@ -137,6 +139,9 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
       - name: Download Ruby V2 test cfg files
         uses: actions/download-artifact@v2
         with:
@@ -152,8 +157,7 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
-          build-commands: "bundle install --path vendor/bundle && bundle exec rspec"
-
+          build-commands: mvn verify
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
