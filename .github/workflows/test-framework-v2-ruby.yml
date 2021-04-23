@@ -30,9 +30,9 @@ jobs:
           cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
 
           mkdir test-cfg-files
-          cp samples/client/petstore/python/petstore_profiling.rb test-cfg-files
-          cp samples/client/petstore/python/press_anykey_to_continue.sh test-cfg-files
-          cp samples/client/petstore/python/Rakefile test-cfg-files
+          cp samples/client/petstore/ruby/petstore_profiling.rb test-cfg-files
+          cp samples/client/petstore/ruby/press_anykey_to_continue.sh test-cfg-files
+          cp samples/client/petstore/ruby/Rakefile test-cfg-files
 
       - name: upload codegen cli
         uses: actions/upload-artifact@v2
