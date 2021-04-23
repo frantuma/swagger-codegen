@@ -29,11 +29,25 @@ jobs:
           mvn -q -B package -DskipTests -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.retryHandler.count=3
           ls modules/swagger-codegen-cli/target/
           cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
+
+          mkdir python-v2-sample-test-config-files
+          cp samples/client/petstore/python/tests -r python-v2-sample-test-config-files
+          cp samples/client/petstore/python/Makefile python-v2-sample-test-config-files
+          cp samples/client/petstore/python/pom.xml python-v2-sample-test-config-files
+          cp samples/client/petstore/python/setup.cfg python-v2-sample-test-config-files
+          cp samples/client/petstore/python/setup.cfg python-v2-sample-test-config-files
+          cp samples/client/petstore/python/test_python2.sh python-v2-sample-test-config-files
+          cp samples/client/petstore/python/test_python2_and_3.sh python-v2-sample-test-config-files
       - name: upload codegen cli
         uses: actions/upload-artifact@v2
         with:
           name: codegen-cli
           path: codegen-cli
+      - name: upload python test cfg files
+        uses: actions/upload-artifact@v2
+        with:
+          name: python-v2-sample-test-config-files
+          path: python-v2-sample-test-config-files
 
   generate:
 
@@ -123,6 +137,10 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Download Python V2 test cfg files
+        uses: actions/download-artifact@v2
+        with:
+          name: python-v2-sample-test-config-files
     ###############################################
     ##### END DYNAMIC: Dependent on build environment
     ###############################################
