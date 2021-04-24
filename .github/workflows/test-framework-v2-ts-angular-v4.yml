@@ -33,11 +33,6 @@ jobs:
         with:
           name: codegen-cli
           path: codegen-cli
-      - name: upload test cfg file
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-cfg-files
-          path: test-cfg-files
 
     env:
       VERSION: ${{ github.event.inputs.version }}
@@ -131,9 +126,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/setup-java@v1
-        with:
-          java-version: ${{ matrix.java }}
     ###############################################
     ##### END DYNAMIC: Dependent on build environment
     ###############################################
@@ -144,7 +136,7 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
-          build-commands: "npm i && npm run build"
+          build-commands: "npm i__&&__npm run build"
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
