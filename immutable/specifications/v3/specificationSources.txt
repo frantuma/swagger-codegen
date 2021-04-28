@@ -10,3 +10,18 @@ petstoreMixed3.yaml -> https://raw.githubusercontent.com/swagger-api/swagger-cod
 html2BearerAuthIssue3.yaml -> https://raw.githubusercontent.com/swagger-api/swagger-codegen/8a8efcf44dc5cfa338fcf53b5ba8757cde86f24a/modules/swagger-codegen/src/test/resources/3_0_0/html2BearerAuthIssue.yaml
     from codegen test dir
 
+the following specs correspond to files with same name in
+
+https://github.com/swagger-api/swagger-codegen/tree/3.0.0/modules/swagger-codegen/src/test/resources/3_0_0
+
+FlattenComposedInlineSchema.yaml
+flattentest.yaml
+globalSecurity.json
+issue-9203.yaml
+noModel.yaml
+OneOfPropertiesIssue.yaml
+product.yaml
+resolvefullytest.yaml
+swos92.yaml
+swos196.yaml
+tags.yaml
