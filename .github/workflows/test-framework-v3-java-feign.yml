@@ -25,6 +25,7 @@ jobs:
         run: |
           mkdir codegen-cli
           echo "BUILDING 3.0.0"
+          git checkout 3.0.0
           mvn -version
           mvn -q -B package -DskipTests -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.retryHandler.count=3
           cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
