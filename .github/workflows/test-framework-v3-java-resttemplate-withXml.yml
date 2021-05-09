@@ -89,7 +89,7 @@ jobs:
           name: ${{ env.JOB_NAME }}generated
           path: ${{ steps.generate.outputs.path }}
     env:
-      JOB_NAME: "java-resttemplate-withxml -v3-sample"
+      JOB_NAME: "java-resttemplate-withxml-v3-sample"
 
   build:
 
