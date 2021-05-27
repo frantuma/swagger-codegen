@@ -1,9 +1,9 @@
-name: Test Framework JAVA
+name: Test Framework Clojure
 
 on:
   # execute on demand
   workflow_dispatch:
-    branches: ["master", "test-framework", "3.0.0"]
+    branches: ["master"]
     inputs:
       language:
         description: 'Language'
