@@ -116,7 +116,7 @@ jobs:
       ##### DYNAMIC: Dependent on build environment
       ###############################################
       matrix:
-        ruby: ['3.0']
+        ruby: ['2.2']
         java: [ 8 ]
       ###############################################
       ##### END DYNAMIC: Dependent on build environment
