@@ -292,4 +292,4 @@ jobs:
           name: ${{ env.JOB_NAME }}logs
           path: ${{ steps.build.outputs.logs }}
     env:
-      JOB_NAME: "ruby-v2-javascript"
+      JOB_NAME: "javascript-v2-sample"
