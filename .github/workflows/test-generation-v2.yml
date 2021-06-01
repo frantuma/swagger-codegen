@@ -1,9 +1,11 @@
-name: Test Framework V2 Ruby
+name: Test Generation V2
 
 on:
   # execute on demand
   workflow_dispatch:
     branches: ["master"]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
 
@@ -28,7 +30,6 @@ jobs:
           mvn -version
           mvn -q -B package -DskipTests -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120 -Dmaven.wagon.http.retryHandler.count=3
           cp modules/swagger-codegen-cli/target/swagger-codegen-cli.jar codegen-cli
-
           mkdir test-cfg-files
           cp samples/client/petstore/ruby/pom.xml test-cfg-files
           cp samples/client/petstore/ruby/petstore_profiling.rb test-cfg-files
@@ -142,11 +143,13 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - name: Download Ruby V2 test cfg files
-        uses: actions/download-artifact@v2
-        with:
-          name: test-cfg-files
-          path: generated/${{ env.JOB_NAME }}
+      - name: ruby test files
+        run: |
+          mkdir test-cfg-files
+          cp samples/client/petstore/ruby/pom.xml generated/${{ env.JOB_NAME }}
+          cp samples/client/petstore/ruby/petstore_profiling.rb generated/${{ env.JOB_NAME }}
+          cp samples/client/petstore/ruby/press_anykey_to_continue.sh generated/${{ env.JOB_NAME }}
+          cp samples/client/petstore/ruby/Rakefile generated/${{ env.JOB_NAME }}
     ###############################################
     ##### END DYNAMIC: Dependent on build environment
     ###############################################
