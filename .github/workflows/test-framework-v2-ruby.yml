@@ -4,6 +4,8 @@ on:
   # execute on demand
   workflow_dispatch:
     branches: ["master"]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
 
