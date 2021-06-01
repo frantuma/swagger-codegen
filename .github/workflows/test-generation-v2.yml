@@ -50,7 +50,7 @@ jobs:
     env:
       VERSION: ${{ github.event.inputs.version }}
 
-  generate:
+  generate-ruby:
 
     needs: build-codegen
 
@@ -106,10 +106,10 @@ jobs:
     env:
       JOB_NAME: "ruby-v2-sample"
 
-  build:
+  build-ruby:
 
-    needs: generate
-    if: contains(needs.generate.outputs.generate_outcome, 'success')
+    needs: generate-ruby
+    if: contains(needs.generate-ruby.outputs.generate_outcome, 'success')
     runs-on: ubuntu-latest
 
     strategy:
