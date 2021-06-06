@@ -158,7 +158,7 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}/SwaggerClient-php
           job-name: ${{ env.JOB_NAME }}
-          build-commands: "ls__&&__pwd__&&__composer install__&&__./vendor/bin/phpunit tests"
+          build-commands: "ls__&&__pwd__&&__cat ./composer.json__&&__composer install__&&__./vendor/bin/phpunit tests"
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
