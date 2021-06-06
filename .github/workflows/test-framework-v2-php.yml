@@ -140,11 +140,6 @@ jobs:
         with:
           name: test-cfg-files
           path: generated/SwaggerClient-php/${{ env.JOB_NAME }}
-      - name: Install Composer Dependencies
-        uses: php-actions/composer@v5
-        with:
-          php_version: 7.1
-          version: 2
     ###############################################
     ##### END DYNAMIC: Dependent on build environment
     ###############################################
@@ -155,7 +150,18 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
-          build-commands: mvn verify
+          build-commands: "pwd__&&__ls"
+    ###############################################
+    ##### DYNAMIC: Dependent on build environment
+    ###############################################
+      - name: Install Composer Dependencies
+        uses: php-actions/composer@v5
+        with:
+          php_version: 7.1
+          version: 2
+    ###############################################
+    ##### END DYNAMIC: Dependent on build environment
+    ###############################################
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
