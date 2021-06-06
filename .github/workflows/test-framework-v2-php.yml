@@ -145,9 +145,9 @@ jobs:
         with:
           php-version: '7.4'
           tools: composer:v2
-      - uses: ramsey/composer-install@v1
-        with:
-          composer-options: "--working-dir=/home/runner/work/swagger-codegen/swagger-codegen/generated/php-v2-sample/SwaggerClient-php"
+#      - uses: ramsey/composer-install@v1
+#        with:
+#          composer-options: "--working-dir=/home/runner/work/swagger-codegen/swagger-codegen/generated/php-v2-sample/SwaggerClient-php"
     ###############################################
     ##### END DYNAMIC: Dependent on build environment
     ###############################################
@@ -158,7 +158,7 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
-          build-commands: mvn verify
+          build-commands: "ls__&&__pwd__&&__composer install"
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
