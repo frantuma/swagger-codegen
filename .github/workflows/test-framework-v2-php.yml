@@ -159,6 +159,7 @@ jobs:
         with:
           php_version: 7.1
           version: 2
+          working_dir: "/home/runner/work/swagger-codegen/swagger-codegen/generated/php-v2-sample/SwaggerClient-php"
     ###############################################
     ##### END DYNAMIC: Dependent on build environment
     ###############################################
