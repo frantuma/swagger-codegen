@@ -76,7 +76,7 @@ jobs:
         continue-on-error: true
         uses: ./.github/actions/generate
         with:
-          language: javascript
+          language: php
           job-name: ${{ env.JOB_NAME }}
           spec-url: https://raw.githubusercontent.com/swagger-api/swagger-codegen/master/modules/swagger-codegen/src/test/resources/2_0/petstore-with-fake-endpoints-models-for-testing.yaml
           options: ""
