@@ -12,6 +12,7 @@
     },
     "host" : "localhost:8080",
     "basePath" : "/",
+    "paths" : [],
     "schemes" : [ "http" ],
     "definitions" : {
         "ContactStrategy" : {
