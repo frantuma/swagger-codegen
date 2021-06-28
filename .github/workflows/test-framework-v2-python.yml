@@ -152,7 +152,7 @@ jobs:
         with:
           path: generated/${{ env.JOB_NAME }}
           job-name: ${{ env.JOB_NAME }}
-          build-commands: "python setup.py install --user__&&__make test-all"
+          build-commands: "python setup.py install__&&__pip install tox__&&__make test-all"
       - id: outcome
         run: |
           echo "::set-output name=build_outcome::${{ steps.build.outcome }}"
