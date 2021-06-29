@@ -17,7 +17,7 @@ from dateutil.parser import parse
 import petstore_api
 import petstore_api.configuration
 
-HOST = 'http://petstore.swagger.io/v2'
+HOST = 'https://petstore.swagger.io/v2'
 
 
 class ApiClientTests(unittest.TestCase):
